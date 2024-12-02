@@ -1,0 +1,204 @@
+/* General Styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    animation: bodyFade 1.5s ease;
+}
+
+@keyframes bodyFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#profile-page {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: slideIn 1s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+/* Header */
+
+h1 {
+    color: #004c8b;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    position: relative;
+    animation: textGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 10px #004c8b, 0 0 20px #004c8b;
+    }
+    100% {
+        text-shadow: 0 0 20px #004c8b, 0 0 30px #004c8b;
+    }
+}
+
+
+/* Section Headers */
+
+.data-section h2 {
+    color: #0066b3;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #004c8b;
+    padding-bottom: 5px;
+    animation: fadeIn 1.2s ease;
+}
+
+
+/* Data Section */
+
+.data-section {
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease;
+}
+
+.data-section p {
+    margin: 5px 0;
+    font-size: 1.1em;
+    color: #333;
+    transition: transform 0.2s ease;
+}
+
+.data-section p:hover {
+    transform: scale(1.02);
+}
+
+
+/* Device Cards */
+
+.device {
+    border: 1px solid #dae0e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #f5faff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: fadeUp 1s ease;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.device:hover {
+    transform: scale(1.03);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.device h2 {
+    color: #00509e;
+    font-size: 1.3em;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.device p {
+    color: #444;
+    font-size: 1em;
+}
+
+
+/* Button Styles */
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: #0066b3;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #004c8b;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    #profile-page {
+        padding: 15px;
+    }
+    h1 {
+        font-size: 1.8em;
+    }
+    .data-section h2,
+    .device h2 {
+        font-size: 1.2em;
+    }
+    .device p,
+    .data-section p {
+        font-size: 1em;
+    }
+}
+
+.status {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.status .ok {
+    color: green;
+}
+
+.status .not-ok {
+    color: red;
+}
