@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YEP Registration</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVbhyE93T-JozS8Sc_CTkXDPCd48diJFE",
+            authDomain: "meow-6b207.firebaseapp.com",
+            databaseURL: "https://meow-6b207-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "meow-6b207",
+            storageBucket: "meow-6b207.appspot.com",
+            messagingSenderId: "87726449777",
+            appId: "1:87726449777:web:9099fe2297e9683daca7d0",
+            measurementId: "G-11RYQ8RR7P"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>YEP Consumer Registration</h2>
+        <form id="registrationForm">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="tel" id="phone" placeholder="Phone Number" required>
+            <input type="text" id="authKey" placeholder="Authentication Key" required>
+
+            <button type="submit">Register</button>
+        </form>
+        <p id="statusMessage"></p>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+
+    <!-- App Script (Uses Firebase) -->
+    <script src="reg_app.js"></script>
+</body>
+
+</html>
