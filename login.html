@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YEP Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVbhyE93T-JozS8Sc_CTkXDPCd48diJFE",
+            authDomain: "meow-6b207.firebaseapp.com",
+            databaseURL: "https://meow-6b207-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "meow-6b207",
+            storageBucket: "meow-6b207.appspot.com",
+            messagingSenderId: "87726449777",
+            appId: "1:87726449777:web:9099fe2297e9683daca7d0",
+            measurementId: "G-11RYQ8RR7P"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>YEP Consumer Login</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="statusMessage"></p>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
+
+    <!-- App Script -->
+    <script src="log_app.js"></script>
+</body>
+
+</html>
