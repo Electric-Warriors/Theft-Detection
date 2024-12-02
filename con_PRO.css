@@ -1,0 +1,265 @@
+/* con_PRO.css */
+
+
+/* General Body Styles */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    overflow-x: hidden;
+}
+
+
+/* Container Styles */
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease;
+    position: relative;
+}
+
+
+/* Fade-in Animation */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* Heading Styles */
+
+h1 {
+    color: #007bff;
+    text-align: center;
+    font-size: 32px;
+    position: relative;
+    animation: textGlow 1.5s ease-in-out infinite alternate;
+}
+
+
+/* Text Glow Animation */
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 10px #007bff, 0 0 20px #007bff, 0 0 30px #007bff;
+    }
+    100% {
+        text-shadow: 0 0 20px #007bff, 0 0 40px #007bff, 0 0 50px #007bff;
+    }
+}
+
+
+/* Data Section Styles */
+
+.data-section {
+    margin: 20px 0;
+    animation: sectionSlide 0.8s ease both;
+}
+
+
+/* Section Slide Animation */
+
+@keyframes sectionSlide {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* Table Styles */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    animation: slideIn 0.6s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+
+/* Table Slide-in Animation */
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+/* Table Header and Data Cell Styles */
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+
+/* Zebra Striping and Hover Effects */
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #ddd;
+    transform: scale(1.02);
+}
+
+
+/* Button Styles */
+
+button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s ease;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Button Hover and Active States */
+
+button:hover {
+    background-color: #218838;
+    transform: scale(1.1);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+
+/* Reset some default styling */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+/* Main container styling */
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+/* Headers */
+
+h1 {
+    font-size: 2em;
+    color: #4A90E2;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 15px 0;
+}
+
+
+/* Data table styling */
+
+.data-section {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+thead {
+    background-color: #4A90E2;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+/* Button styling */
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #4A90E2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #357ABD;
+}
