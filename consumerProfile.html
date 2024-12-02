@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Profile</title>
+    <link rel="stylesheet" href="con_PRO.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Welcome to the Consumer Profile Page</h1>
+        <div id="userDetails"></div>
+        <div class="data-section">
+            <h2>Consumer Data</h2>
+            <table id="consumerDataTable">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody id="consumerData"></tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <h2>Historical Data</h2>
+            <table id="historicalData">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Current (A)</th>
+                        <th>Voltage (V)</th>
+                        <th>Power (W)</th>
+                        <th>Energy (kWh)</th>
+                    </tr>
+                </thead>
+                <tbody id="historicalDataTable"></tbody>
+                <!-- Updated to use this ID for data insertion -->
+            </table>
+        </div>
+
+        <canvas id="realTimeDataChart" width="600" height="400"></canvas>
+        <canvas id="historicalDataChart" width="600" height="400"></canvas>
+        <canvas id="currentDataChart" width="600" height="400"></canvas>
+        <canvas id="powerDataChart" width="600" height="400"></canvas>
+
+        <button id="logoutButton">Logout</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="consumerProfile.js"></script>
+
+</body>
+
+</html>
