@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Our Team</title>
+    <style>
+        /* General Styles */
+        
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* About Section Styles */
+        
+        #about {
+            padding: 60px 20px;
+            background-color: #f4f4f9;
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        #about h2 {
+            font-size: 2.8em;
+            color: #333;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+        /* Team Container and Member Styles */
+        
+        .team-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .team-member {
+            background-color: #fff;
+            padding: 25px;
+            max-width: 300px;
+            text-align: left;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideInUp 1s ease forwards;
+            opacity: 0;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .profile-pic:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .team-member h3 {
+            font-size: 1.6em;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .team-member p {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .team-member p strong {
+            color: #333;
+        }
+        /* Animation Keyframes */
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            #about h2 {
+                font-size: 2.2em;
+            }
+            .team-member {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Us</h2>
+        <div class="team-container">
+            <!-- Deenu Raj Piproliya's Information -->
+            <div class="team-member">
+                <img src="deenu_pic.jpg" alt="Deenu Raj Piproliya" class="profile-pic">
+                <h3>Deenu Raj Piproliya</h3>
+                <p><strong>Role:</strong> Student</p>
+                <p><strong>Department:</strong> Electrical Engineering</p>
+                <p><strong>Current Semester:</strong> 7th Semester</p>
+                <p><strong>Education:</strong> 10th Grade - 76.4%, 12th Grade - 76%</p>
+                <p><strong>Skills:</strong> PLC, MATLAB, Proteus, C++, C, Arduino, ESP32, ESP8266</p>
+                <p><strong>Current Project Contributions:</strong>Developed an IoT-enabled hardware prototype for real-time power theft detection, with a website for real-time monitoring and authority-controlled consumer connections.</p>
+            </div>
+
+            <!-- Jatin Lokhande's Information -->
+            <div class="team-member">
+                <img src="jatin.jpg" alt="Jatin Lokhande" class="profile-pic">
+                <h3>Jatin Lokhande</h3>
+                <p><strong>Role:</strong> Student</p>
+                <p><strong>Department:</strong> Electrical Engineering</p>
+                <p><strong>Current Semester:</strong> 7th Semester</p>
+                <p><strong>Education:</strong> 10th Grade - 81%, 12th Grade - 77.8%</p>
+                <p><strong>Skills:</strong> C, C++, Arduino IDE, Electrical Circuitry</p>
+                <p><strong>Project Contribution:</strong> Developed a hardware model for the IoT-Based Real-Time Power Theft Monitoring and Detection System.</p>
+            </div>
+
+            <!-- Sachin Prasad's Information -->
+            <div class="team-member">
+                <img src="sachin.jpg" alt="Sachin Prasad" class="profile-pic">
+                <h3>Sachin Prasad</h3>
+                <p><strong>Role:</strong> Student</p>
+                <p><strong>Department:</strong> Electrical Engineering</p>
+                <p><strong>Current Semester:</strong> 7th Semester</p>
+                <p><strong>Education:</strong> 10th Grade - 71.2%, 12th Grade - 83.4%</p>
+                <p><strong>Skills:</strong> C, C++, Arduino IDE, Electrical Circuitry</p>
+                <p><strong>Project Contribution:</strong> Built a functional hardware model for the IoT-Based Real-Time Power Theft Monitoring and Detection System.</p>
+            </div>
+
+            <!-- Pratham Maurya's Information -->
+            <div class="team-member">
+                <img src="pratham.jpg" alt="Pratham Maurya" class="profile-pic">
+                <h3>Pratham Maurya</h3>
+                <p><strong>Role:</strong> Student</p>
+                <p><strong>Department:</strong> Electrical Engineering</p>
+                <p><strong>Current Semester:</strong> 7th Semester</p>
+                <p><strong>Education:</strong> 10th Grade - 79.8%, 12th Grade - 83.8%</p>
+                <p><strong>Skills:</strong> C, C++, Arduino IDE, Electrical Circuitry</p>
+                <p><strong>Project Contribution:</strong> Worked on building the hardware model for the IoT-Based Real-Time Power Theft Monitoring and Detection System.</p>
+            </div>
+
+            <!-- Swati Patel's Information -->
+            <div class="team-member">
+                <img src="swati.jpg" alt="Swati Patel" class="profile-pic">
+                <h3>Swati Patel</h3>
+                <p><strong>Role:</strong> Student</p>
+                <p><strong>Department:</strong> Electrical Engineering</p>
+                <p><strong>Current Semester:</strong> 7th Semester</p>
+                <p><strong>Education:</strong> 10th Grade - 91%, 12th Grade - 86%</p>
+                <p><strong>Skills:</strong> C++, Networking, Machine Learning, Electrical Circuitry</p>
+                <p><strong>Project Contribution:</strong> Contributed to the development of the hardware model for the IoT-Based Real-Time Power Theft Monitoring and Detection System.</p>
+
+            </div>
+
+
+            <!-- Guide: Dr. Rajeev Kumar Chauhan's Information -->
+            <div class="team-member">
+                <img src="image.png" alt="Dr. Rajeev Kumar Chauhan" class="profile-pic">
+                <h3>Dr. Rajeev Kumar Chauhan</h3>
+                <p><strong>Role:</strong> Guide & Professor</p>
+                <p><strong>Department:</strong> Electrical & Electronics Engineering</p>
+                <p><strong>Qualifications:</strong> Ph.D. in Coordinated Multi-stage Distribution System Planning, M.Tech. (88.3%), B.E. (68%)</p>
+                <p><strong>Experience:</strong> Teaching - 20 years (UG - 8 years, PG - 12 years), Industry - 3 years, Research - 20 years</p>
+                <p><strong>Publications:</strong> 15 International Journals, 20 Conference Papers (17 International, 3 National)</p>
+                <p><strong>Workshops:</strong> 5 International, 30 National</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
