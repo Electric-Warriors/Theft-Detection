@@ -81,16 +81,21 @@ function displayData(data) {
     });
 }
 
-// Function to compare C1 and P1 currents with 2% error margin
+// Function to compare C1 and P1 currents with 2% error margin and 0.09 amp tolerance
 function compareCurrents(c1Current, p1Current) {
     const errorMargin = 0.02; // 2% error
     const difference = Math.abs(c1Current - p1Current);
     const allowableDifference = c1Current * errorMargin;
+    const tolerance = 0.1; // 0.09 amp tolerance
 
     const c1StatusElement = document.getElementById("c1-status");
     const p1StatusElement = document.getElementById("p1-status");
 
-    if (difference > allowableDifference) {
+    if (difference <= tolerance) {
+        // Ignore small differences within the 0.09 amp range
+        c1StatusElement.innerHTML = `<span class="ok"></span>`;
+        p1StatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
+    } else if (difference > allowableDifference) {
         c1StatusElement.innerHTML = `<span class="not-ok"></span>`;
         p1StatusElement.innerHTML = `<span class="not-ok">Mismatch</span>`;
     } else {
@@ -99,32 +104,40 @@ function compareCurrents(c1Current, p1Current) {
     }
 }
 
-// Function to compare P2 current with the sum of P1 and C2 currents
+// Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
 function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
     const expectedCurrent = p1Current + c2Current;
     const difference = Math.abs(p2Current - expectedCurrent);
     const allowableDifference = expectedCurrent * errorMargin;
+    const tolerance = 0.1; // 0.09 amp tolerance
 
     const p2StatusElement = document.getElementById("p2-status");
 
-    if (difference <= allowableDifference) {
+    if (difference <= tolerance) {
+        // Ignore small differences within the 0.09 amp range
+        p2StatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
+    } else if (difference <= allowableDifference) {
         p2StatusElement.innerHTML = `<span class="ok">All OK IN P2 Region</span>`;
     } else {
         p2StatusElement.innerHTML = `<span class="not-ok">Mismatch</span>`;
     }
 }
 
-// Function to compare P3 current with the sum of C3 and P2 currents
+// Function to compare P3 current with the sum of C3 and P2 currents with 2% error margin and 0.09 amp tolerance
 function compareP3Current(p3Current, c3Current, p2Current) {
     const errorMargin = 0.02; // 2% error
     const expectedCurrent = c3Current + p2Current;
     const difference = Math.abs(p3Current - expectedCurrent);
     const allowableDifference = expectedCurrent * errorMargin;
+    const tolerance = 0.1; // 0.09 amp tolerance
 
     const p3StatusElement = document.getElementById("p3-status");
 
-    if (difference <= allowableDifference) {
+    if (difference <= tolerance) {
+        // Ignore small differences within the 0.09 amp range
+        p3StatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
+    } else if (difference <= allowableDifference) {
         p3StatusElement.innerHTML = `<span class="ok">All OK IN P3 Region</span>`;
     } else {
         p3StatusElement.innerHTML = `<span class="not-ok">Mismatch</span>`;
