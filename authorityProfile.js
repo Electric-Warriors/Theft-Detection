@@ -110,7 +110,7 @@ function compareP2Current(p2Current, p1Current, c2Current) {
     const expectedCurrent = p1Current + c2Current;
     const difference = Math.abs(p2Current - expectedCurrent);
     const allowableDifference = expectedCurrent * errorMargin;
-    const tolerance = 0.03; // 0.09 amp tolerance
+    const tolerance = 0.05; // 0.09 amp tolerance
 
     const p2StatusElement = document.getElementById("p2-status");
 
