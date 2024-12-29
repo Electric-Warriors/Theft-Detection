@@ -81,6 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <tr><td>Energy</td><td>${consumerData.Energy} kWh</td></tr>
                     <tr><td>LED Status</td><td>${consumerData.LED ? "On" : "Off"}</td></tr>
                 `;
+                 // Check Warning status and update warning field visibility
+                const warningField = document.getElementById('warningField');
+                if (consumerData.Warning) {
+                    warningField.style.display = 'block'; // Show warning field
+                } else {
+                    warningField.style.display = 'none'; // Hide warning field
+                }
                 // Update real-time chart
                 updateRealTimeChart(consumerData);
             }
