@@ -29,6 +29,7 @@ async function fetchProfileData() {
             compareCurrents(data.C1.Current, data.P1.Current); // Compare C1 and P1 currents
             compareP2Current(data.P2.Current, data.P1.Current, data.C2.Current); // Compare P2 with P1 + C2
             compareP3Current(data.P3.Current, data.C3.Current, data.P2.Current); // Compare P3 with C3 + P2
+             compareP3WithMain(data.P3.Current, data.MAIN.Current); // Compare P3 with MAIN current
         } else {
             console.log("No data available");
         }
@@ -49,7 +50,8 @@ function displayData(data) {
         <p>Energy: ${data.MAIN.Energy}</p>
         <p>Power: ${data.MAIN.Power}</p>
         <p>Voltage: ${data.MAIN.Voltage}</p>`;
-    deviceDataSection.appendChild(mainData);
+    <p id="main-status" class="status"></p>`; // Added for MAIN status
+       deviceDataSection.appendChild(mainData);
 
     // Device Data Cards for C1, C2, C3, P1, P2, P3
     ["C1", "C2", "C3", "P1", "P2", "P3"].forEach((key) => {
