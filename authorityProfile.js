@@ -285,12 +285,11 @@ async function compareP3Current(p3Current, c3Current, p2Current) {
         }, 10000); // Recheck after 10 seconds assuming C3's current is zero
     }
 }
-// Function to compare P3 current with MAIN current with 2% error margin and 0.09 amp tolerance
 function compareP3WithMain(p3Current, mainCurrent) {
     const errorMargin = 0.02; // 2% error margin
+    const tolerance = 0.09; // 0.09 amp tolerance
     const difference = Math.abs(p3Current - mainCurrent);
     const allowableDifference = mainCurrent * errorMargin;
-    const tolerance = 0.09; // 0.09 amp tolerance
 
     const p3StatusElement = document.getElementById("p3-status");
     const mainStatusElement = document.getElementById("main-status");
@@ -300,15 +299,16 @@ function compareP3WithMain(p3Current, mainCurrent) {
         p3StatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
         mainStatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
     } else if (difference <= allowableDifference) {
+        // Differences within acceptable error margin
         p3StatusElement.innerHTML = `<span class="ok">All OK in P3 Region</span>`;
         mainStatusElement.innerHTML = `<span class="ok">All OK in Main Region</span>`;
     } else {
-        p3StatusElement.innerHTML = `<span class="not-ok">Mismatch</span>`;
-        mainStatusElement.innerHTML = `<span class="not-ok">Mismatch</span>`;
-
-        // Handle mismatch case, can be extended as needed
-        console.log("Mismatch detected between P3 and MAIN current");
+        // Significant mismatch detected
+        p3StatusElement.innerHTML = `<span class="not-ok">Mismatch detected</span>`;
+        mainStatusElement.innerHTML = `<span class="not-ok">Theft detected between MAIN and P3</span>`;
+        console.log("Theft detected: Significant mismatch between MAIN and P3 current.");
     }
 }
+
 // Fetch and display data on page load
 fetchProfileData();
