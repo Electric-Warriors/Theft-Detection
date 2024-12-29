@@ -29,7 +29,7 @@ async function fetchProfileData() {
             compareCurrents(data.C1.Current, data.P1.Current); // Compare C1 and P1 currents
             compareP2Current(data.P2.Current, data.P1.Current, data.C2.Current); // Compare P2 with P1 + C2
             compareP3Current(data.P3.Current, data.C3.Current, data.P2.Current); // Compare P3 with C3 + P2
-            
+            compareP3WithMain(data.MAIN.Current, data.P3.Current ); // Compare P3 with MAIN curren
         } else {
             console.log("No data available");
         }
