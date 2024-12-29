@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+
     // Function to fetch historical data from Google Sheets based on authkey
     function fetchHistoricalData(authKey) {
         const sheetUrl = sheetUrls[authKey];
@@ -107,24 +108,11 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(csvText => {
                 const data = csvToArray(csvText);
                 if (data.length > 0) {
-                    // Clear previous historical data
-                    historicalDataTable.innerHTML = '';
+                    // Call the function to populate the historical data table with "Read More" feature
+                    populateHistoricalDataTable(data);
 
-                    // Loop through rows to populate the historical data table
-                    data.forEach(row => {
-                        // Create a new table row for each data row
-                        let rowHtml = '<tr>';
-                        row.forEach(cell => {
-                            rowHtml += `<td>${cell}</td>`; // Include each cell in the row
-                        });
-                        rowHtml += '</tr>';
-
-                        // Add the row to the table
-                        historicalDataTable.innerHTML += rowHtml;
-                    });
-
-                    // Render historical data chart
-                    renderHistoricalChart(data);
+                    // Render historical data charts
+                    renderHistoricalCharts(data);
                 } else {
                     console.error("No historical data found.");
                 }
@@ -140,29 +128,61 @@ document.addEventListener('DOMContentLoaded', function() {
         return rows.map(row => row.split(","));
     }
 
-    // Function to update real-time data chart
-    function updateRealTimeChart(data) {
-        const realTimeDataChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Current', 'Voltage', 'Power'],
-                datasets: [{
-                    label: 'Real-Time Data',
-                    data: [data.Current, data.Voltage, data.Power],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: true,
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+    // Function to populate historical data table with a "Read More" feature
+    function populateHistoricalDataTable(data) {
+        const rowsToShow = 5; // Number of rows to display initially
+        let currentRowCount = 0;
+
+        // Clear previous historical data
+        historicalDataTable.innerHTML = '';
+
+        // Add rows with a limit
+        data.forEach((row, index) => {
+            if (index < rowsToShow) {
+                let rowHtml = '<tr>';
+                row.forEach(cell => {
+                    rowHtml += `<td>${cell}</td>`; // Include each cell in the row
+                });
+                rowHtml += '</tr>';
+                historicalDataTable.innerHTML += rowHtml;
+                currentRowCount++;
             }
         });
+
+        // Add the "Read More" button if there are more rows
+        if (data.length > rowsToShow) {
+            const readMoreButton = document.createElement('button');
+            readMoreButton.id = 'readMoreButton';
+            readMoreButton.textContent = 'Read More';
+            readMoreButton.style.marginTop = '10px';
+            historicalDataTable.parentNode.appendChild(readMoreButton);
+
+            // Event listener for "Read More" button
+            readMoreButton.addEventListener('click', () => {
+                const rowsLeft = data.length - currentRowCount;
+                const newRowsToShow = Math.min(rowsToShow, rowsLeft);
+
+                // Add more rows
+                for (let i = currentRowCount; i < currentRowCount + newRowsToShow; i++) {
+                    if (i < data.length) {
+                        let rowHtml = '<tr>';
+                        data[i].forEach(cell => {
+                            rowHtml += `<td>${cell}</td>`;
+                        });
+                        rowHtml += '</tr>';
+                        historicalDataTable.innerHTML += rowHtml;
+                    }
+                }
+
+                // Update current row count
+                currentRowCount += newRowsToShow;
+
+                // Hide the button if all rows are shown
+                if (currentRowCount >= data.length) {
+                    readMoreButton.style.display = 'none';
+                }
+            });
+        }
     }
 
     // Function to render historical charts for current, power, and energy
@@ -219,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Render Energy Chart (Existing one)
+        // Render Energy Chart
         new Chart(historicalChartCtx, {
             type: 'bar',
             data: {
@@ -241,45 +261,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Call renderHistoricalCharts inside fetchHistoricalData after parsing CSV data
-    function fetchHistoricalData(authKey) {
-        const sheetUrl = sheetUrls[authKey];
-        if (!sheetUrl) {
-            console.error("Invalid authkey:", authKey);
-            return;
-        }
-
-        fetch(sheetUrl)
-            .then(response => response.text())
-            .then(csvText => {
-                const data = csvToArray(csvText);
-                if (data.length > 0) {
-                    // Populate the historical data table and render charts
-                    historicalDataTable.innerHTML = '';
-                    data.forEach(row => {
-                        let rowHtml = '<tr>';
-                        row.forEach(cell => {
-                            rowHtml += `<td>${cell}</td>`;
-                        });
-                        rowHtml += '</tr>';
-                        historicalDataTable.innerHTML += rowHtml;
-                    });
-                    renderHistoricalCharts(data);
-                } else {
-                    console.error("No historical data found.");
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching historical data:", error);
-            });
-    }
-
-
-
     // Logout functionality
     logoutButton.addEventListener('click', () => {
         auth.signOut().then(() => {
             window.location.href = 'login.html'; // Redirect to login page after logout
         });
-    });
+    })
 });
