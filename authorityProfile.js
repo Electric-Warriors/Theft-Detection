@@ -296,15 +296,15 @@ function compareP3WithMain(p3Current, mainCurrent) {
 
     if (difference <= tolerance) {
         // Ignore small differences within the 0.09 amp range
-        p3StatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
+      
         mainStatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
     } else if (difference <= allowableDifference) {
         // Differences within acceptable error margin
-        p3StatusElement.innerHTML = `<span class="ok">All OK in P3 Region</span>`;
+       
         mainStatusElement.innerHTML = `<span class="ok">All OK in Main Region</span>`;
     } else {
         // Significant mismatch detected
-        p3StatusElement.innerHTML = `<span class="not-ok">Mismatch detected</span>`;
+      
         mainStatusElement.innerHTML = `<span class="not-ok">Theft detected between MAIN and P3</span>`;
         console.log("Theft detected: Significant mismatch between MAIN and P3 current.");
     }
