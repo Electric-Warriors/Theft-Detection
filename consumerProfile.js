@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to populate historical data table with a "Read More" feature
     function populateHistoricalDataTable(data) {
-        const rowsToShow = 5; // Number of rows to display initially
+        const rowsToShow = 15; // Number of rows to display initially
         let currentRowCount = 0;
 
         // Clear previous historical data
