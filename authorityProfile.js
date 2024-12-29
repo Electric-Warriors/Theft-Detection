@@ -29,7 +29,7 @@ async function fetchProfileData() {
             compareCurrents(data.C1.Current, data.P1.Current); // Compare C1 and P1 currents
             compareP2Current(data.P2.Current, data.P1.Current, data.C2.Current); // Compare P2 with P1 + C2
             compareP3Current(data.P3.Current, data.C3.Current, data.P2.Current); // Compare P3 with C3 + P2
-            compareP3WithMain(data.MAIN.Current, data.P3.Current ); // Compare P3 with MAIN curren
+            compareP3WithMain(data.MAIN.Current, data.P3.Current ); // Compare P3 with MAIN current
         } else {
             console.log("No data available");
         }
@@ -291,20 +291,17 @@ function compareP3WithMain(p3Current, mainCurrent) {
     const difference = Math.abs(p3Current - mainCurrent);
     const allowableDifference = mainCurrent * errorMargin;
 
-    const p3StatusElement = document.getElementById("p3-status");
+   
     const mainStatusElement = document.getElementById("main-status");
 
     if (difference <= tolerance) {
         // Ignore small differences within the 0.09 amp range
-      
-        mainStatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
+       mainStatusElement.innerHTML = `<span class="ok">Difference too small to detect</span>`;
     } else if (difference <= allowableDifference) {
         // Differences within acceptable error margin
-       
-        mainStatusElement.innerHTML = `<span class="ok">All OK in Main Region</span>`;
+          mainStatusElement.innerHTML = `<span class="ok">All OK in Main Region</span>`;
     } else {
         // Significant mismatch detected
-      
         mainStatusElement.innerHTML = `<span class="not-ok">Theft detected between MAIN and P3</span>`;
         console.log("Theft detected: Significant mismatch between MAIN and P3 current.");
     }
