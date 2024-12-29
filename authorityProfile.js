@@ -49,8 +49,8 @@ function displayData(data) {
         <p>Current: ${data.MAIN.Current}</p>
         <p>Energy: ${data.MAIN.Energy}</p>
         <p>Power: ${data.MAIN.Power}</p>
-        <p>Voltage: ${data.MAIN.Voltage}</p>
-        <p id="main-status" class="status"></p>`; // Added for MAIN status
+        <p>Voltage: ${data.MAIN.Voltage}</p>`;
+         `<p id="main-status" class="status"></p>`; // Added for MAIN status
        deviceDataSection.appendChild(mainData);
 
     // Device Data Cards for C1, C2, C3, P1, P2, P3
