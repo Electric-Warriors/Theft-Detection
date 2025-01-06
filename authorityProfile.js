@@ -148,7 +148,6 @@ async function updateConnectionStatus(device, status) {
     }
 }
 
-// Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
     const tolerance = 0.05; // 0.09 amp tolerance
