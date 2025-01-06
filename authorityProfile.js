@@ -149,7 +149,7 @@ async function updateConnectionStatus(device, status) {
 }
 //p2,c2,c1
 // Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
-// Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
+// Function to compare P2 current with the sum of P1 and C2 currents
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
     const tolerance = 0.09; // 0.09 amp tolerance
@@ -235,14 +235,42 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
         } else {
             // No theft detected during second check, consumer fault
             p2StatusElement.innerHTML = `<span class="not-ok">Fault detected in consumer line</span>`;
-            console.log("Fault detected in consumer line. Setting LED off again...");
+            console.log("Fault detected in consumer line. Setting LED to true with warning...");
 
-            // Set LED of C2 to false again
-            await update(c2Ref, { LED: false });
-            console.log("LED of C2 set to false due to consumer fault");
+            // Set LED to true and Warning to true for 1 minute before rechecking
+            await update(c2Ref, { LED: true, Warning: true });
+            console.log("LED of C2 set to true and Warning activated");
+
+            setTimeout(async () => {
+                // Recheck process after 1 minute
+                console.log("Rechecking consumer line fault after 1 minute...");
+                const p1Snapshot = await get(ref(db, 'P1'));
+                const c2Snapshot = await get(ref(db, 'C2'));
+                const p2Snapshot = await get(ref(db, 'P2'));
+
+                const p1RealTimeCurrent = p1Snapshot.exists() ? p1Snapshot.val().Current : 0;
+                const c2RealTimeCurrent = c2Snapshot.exists() ? c2Snapshot.val().Current : 0;
+                const p2RealTimeCurrent = p2Snapshot.exists() ? p2Snapshot.val().Current : 0;
+
+                const newExpectedCurrent = p1RealTimeCurrent + c2RealTimeCurrent;
+                const newDifference = Math.abs(p2RealTimeCurrent - newExpectedCurrent);
+
+                if (newDifference > allowableDifference) {
+                    // Still mismatch, confirm theft and disconnect
+                    await update(c2Ref, { LED: false });
+                    p2StatusElement.innerHTML = `<span class="not-ok">Consumer fault unresolved. Disconnecting...</span>`;
+                    console.log("Consumer fault unresolved. LED of C2 set to false.");
+                } else {
+                    // Fault resolved
+                    await update(c2Ref, { Warning: false });
+                    p2StatusElement.innerHTML = `<span class="ok">Consumer fault resolved</span>`;
+                    console.log("Consumer fault resolved. Warning cleared.");
+                }
+            }, 60000); // Recheck after 1 minute
         }
     }, 10000); // Recheck after 10 seconds
 }
+
 
 
 
