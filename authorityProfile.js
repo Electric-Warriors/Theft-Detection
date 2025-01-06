@@ -14,6 +14,31 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+// Real-time listener function
+function listenForRealTimeUpdates() {
+    const dataRef = ref(db);
+
+    // Listen for real-time updates on data changes
+    onValue(dataRef, (snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            // Clear existing data display
+            document.getElementById("device-data").innerHTML = "";
+            // Redisplay updated data
+            displayData(data);
+        } else {
+            console.log("No data available");
+        }
+    }, (error) => {
+        console.error("Error listening for updates:", error);
+    });
+}
+
+// Existing displayData and related functions...
+// (Include all your other functions like displayData, compareCurrents, etc., here)
+
+// Call the real-time listener after defining all functions
+listenForRealTimeUpdates();
 
 let mismatchTimeout;
 let mismatchDetected = false;
