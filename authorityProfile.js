@@ -148,6 +148,7 @@ async function updateConnectionStatus(device, status) {
     }
 }
 //p2,c2,c1
+// Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
     const tolerance = 0.05; // 0.09 amp tolerance
@@ -196,11 +197,11 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                     console.log("Comparison stopped for 5 minutes due to confirmed theft");
                 }, 5000); // Keep showing the theft message for 5 minutes
 
-                // Reset comparison to the initial stage after 1 minute if theft confirmed
+                // After 1 minute, recheck the situation
                 setTimeout(async () => {
-                    console.log("Resetting comparison to the initial stage after 1 minute");
+                    console.log("Rechecking after 1 minute");
 
-                    // Recheck the consumer line after 1 minute
+                    // Fetch real-time values again for the recheck
                     const p1Snapshot = await get(ref(db, 'P1'));
                     const p2Snapshot = await get(ref(db, 'P2'));
                     const c2Snapshot = await get(ref(db, 'C2'));
@@ -209,52 +210,27 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                     const p2RealTimeCurrent = p2Snapshot.exists() ? p2Snapshot.val().Current : 0;
                     const c2RealTimeCurrent = c2Snapshot.exists() ? c2Snapshot.val().Current : 0;
 
-                    const newExpectedCurrent = p1RealTimeCurrent + c2RealTimeCurrent;
-                    const newDifference = Math.abs(p2RealTimeCurrent - newExpectedCurrent);
+                    // Compare P2 current with P1 + C2 (C2 assumed as 0)
+                    const expectedCurrentWithZeroC2 = p1RealTimeCurrent;
+                    const newDifference = Math.abs(p2RealTimeCurrent - expectedCurrentWithZeroC2);
 
                     if (newDifference > allowableDifference) {
-                        // If theft still exists, confirm theft and switch off C2 LED
-                        p2StatusElement.innerHTML = `<span class="not-ok">Theft confirmed on consumer side</span>`;
+                        // Theft detected again, execute final action
+                        p2StatusElement.innerHTML = `<span class="not-ok">Theft confirmed at consumer side</span>`;
                         console.log("Theft still confirmed at consumer side");
 
-                        // Execute the final command to turn off C2 LED
+                        // Set LED of C2 to false
                         await update(c2Ref, { LED: false });
                         console.log("LED of C2 set to false because theft confirmed at consumer side");
-
-                        // Repeat the process after 15 seconds to handle the 15 seconds LED off requirement
-                        setTimeout(async () => {
-                            // Fetch real-time values from the database for P1 and P2 before rechecking again
-                            const p1Snapshot = await get(ref(db, 'P1'));
-                            const p2Snapshot = await get(ref(db, 'P2'));
-                            const p1RealTimeCurrent = p1Snapshot.exists() ? p1Snapshot.val().Current : 0;
-                            const p2RealTimeCurrent = p2Snapshot.exists() ? p2Snapshot.val().Current : 0;
-
-                            // Compare again assuming C2's current is zero (for theft detection)
-                            const expectedCurrentWithZeroC2 = p1RealTimeCurrent; // Assume C2 is 0
-                            const differenceWithZeroC2 = Math.abs(p2RealTimeCurrent - expectedCurrentWithZeroC2);
-
-                            if (differenceWithZeroC2 > tolerance) {
-                                // Theft still detected, continue the cycle
-                                await update(c2Ref, { LED: false });
-                                console.log("LED of C2 set to false for another 15 seconds due to continued theft detection");
-                            } else {
-                                // No theft detected, reset comparison
-                                p2StatusElement.innerHTML = `<span class="ok">Consumer fixed the issue, no theft detected</span>`;
-                                console.log("No theft detected, consumer fixed the issue");
-
-                                // Reset the comparison process by calling the function again
-                                compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, c2RealTimeCurrent);
-                            }
-                        }, 15000); // Repeat the 15-second check for theft after 15 seconds of LED off
                     } else {
-                        // If no theft is found, reset comparison and show success message
+                        // If no theft, consumer fixed the issue
                         p2StatusElement.innerHTML = `<span class="ok">Consumer fixed the issue, no theft detected</span>`;
                         console.log("No theft detected, consumer fixed the issue");
 
                         // Reset the comparison process by calling the function again
                         compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, c2RealTimeCurrent);
                     }
-                }, 60000); // Reset and recheck after 1 minute
+                }, 60000); // Recheck after 1 minute
             } else {
                 // No theft detected, it's a consumer fault
                 p2StatusElement.innerHTML = `<span class="ok">Fault in consumer line detected</span>`;
@@ -288,6 +264,7 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
         }, 10000); // Recheck after 10 seconds assuming C2's current is zero
     }
 }
+
 
 
 // Function to compare P3 current with the sum of C3 and P2 currents with 2% error margin and 0.09 amp tolerance
