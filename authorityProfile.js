@@ -220,16 +220,19 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                         p2StatusElement.innerHTML = `<span class="not-ok">Theft confirmed at consumer side</span>`;
                         console.log("Theft still confirmed at consumer side");
 
-                        // Set LED of C2 to false since theft is confirmed
+                        // Set LED of C2 to false because theft is confirmed
                         await update(c2Ref, { LED: false });
                         console.log("LED of C2 set to false because theft confirmed at consumer side");
+
+                        // After confirming theft at consumer side, restart the entire process
+                        compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, c2RealTimeCurrent); // Repeat process from top
                     } else {
                         // If no theft, consumer fixed the issue
                         p2StatusElement.innerHTML = `<span class="ok">Consumer fixed the issue, no theft detected</span>`;
                         console.log("No theft detected, consumer fixed the issue");
 
                         // Reset the comparison process by calling the function again
-                        compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, c2RealTimeCurrent);
+                        compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, c2RealTimeCurrent); // Repeat process from top
                     }
                 }, 60000); // Recheck after 1 minute
             } else {
