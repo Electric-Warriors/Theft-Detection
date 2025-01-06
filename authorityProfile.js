@@ -149,6 +149,7 @@ async function updateConnectionStatus(device, status) {
 }
 //p2,c2,c1
 // Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
+// Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
     const tolerance = 0.05; // 0.09 amp tolerance
@@ -165,7 +166,7 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
         p2StatusElement.innerHTML = `<span class="ok">All OK in P2 Region</span>`;
     } else {
         p2StatusElement.innerHTML = `<span class="not-ok">Mismatch</span>`;
-        
+
         // Mismatch detected, set LED of C2 to false for 15 seconds
         const c2Ref = ref(db, 'C2');
         await update(c2Ref, { LED: false });
@@ -219,7 +220,7 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                         p2StatusElement.innerHTML = `<span class="not-ok">Theft confirmed at consumer side</span>`;
                         console.log("Theft still confirmed at consumer side");
 
-                        // Set LED of C2 to false
+                        // Set LED of C2 to false since theft is confirmed
                         await update(c2Ref, { LED: false });
                         console.log("LED of C2 set to false because theft confirmed at consumer side");
                     } else {
