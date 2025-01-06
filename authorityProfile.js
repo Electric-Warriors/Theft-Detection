@@ -197,6 +197,16 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                     console.log("Comparison stopped for 5 minutes due to confirmed theft");
                 }, 5000); // Keep showing the theft message for 5 minutes
 
+                // Reset comparison to the initial stage after 1 minute if theft confirmed
+                setTimeout(async () => {
+                    console.log("Resetting comparison to the initial stage after 1 minute");
+
+                    // Reset LED of C2 in case any state was changed earlier
+                    await update(c2Ref, { LED: true });
+
+                    // Start the comparison process again from the initial stage
+                    compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, 0); // Assuming C2 current is zero at this point
+                }, 60000); // Reset after 1 minute
             } else {
                 // No theft detected, it's a consumer fault
                 p2StatusElement.innerHTML = `<span class="ok">Fault in consumer line detected</span>`;
