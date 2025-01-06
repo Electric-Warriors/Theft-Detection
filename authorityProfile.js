@@ -201,12 +201,35 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                 setTimeout(async () => {
                     console.log("Resetting comparison to the initial stage after 1 minute");
 
-                    // Reset LED of C2 in case any state was changed earlier
-                    await update(c2Ref, { LED: true });
+                    // Recheck the consumer line after 1 minute
+                    const p1Snapshot = await get(ref(db, 'P1'));
+                    const p2Snapshot = await get(ref(db, 'P2'));
+                    const c2Snapshot = await get(ref(db, 'C2'));
 
-                    // Start the comparison process again from the initial stage
-                    compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, 0); // Assuming C2 current is zero at this point
-                }, 60000); // Reset after 1 minute
+                    const p1RealTimeCurrent = p1Snapshot.exists() ? p1Snapshot.val().Current : 0;
+                    const p2RealTimeCurrent = p2Snapshot.exists() ? p2Snapshot.val().Current : 0;
+                    const c2RealTimeCurrent = c2Snapshot.exists() ? c2Snapshot.val().Current : 0;
+
+                    const newExpectedCurrent = p1RealTimeCurrent + c2RealTimeCurrent;
+                    const newDifference = Math.abs(p2RealTimeCurrent - newExpectedCurrent);
+
+                    if (newDifference > allowableDifference) {
+                        // If theft still exists, confirm theft and switch off C2 LED
+                        p2StatusElement.innerHTML = `<span class="not-ok">Theft confirmed on consumer side</span>`;
+                        console.log("Theft still confirmed at consumer side");
+
+                        // Execute the final command to turn off C2 LED
+                        await update(c2Ref, { LED: false });
+                        console.log("LED of C2 set to false because theft confirmed at consumer side");
+                    } else {
+                        // If no theft is found, reset comparison and show success message
+                        p2StatusElement.innerHTML = `<span class="ok">Consumer fixed the issue, no theft detected</span>`;
+                        console.log("No theft detected, consumer fixed the issue");
+
+                        // Reset the comparison process by calling the function again
+                        compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, c2RealTimeCurrent);
+                    }
+                }, 60000); // Reset and recheck after 1 minute
             } else {
                 // No theft detected, it's a consumer fault
                 p2StatusElement.innerHTML = `<span class="ok">Fault in consumer line detected</span>`;
