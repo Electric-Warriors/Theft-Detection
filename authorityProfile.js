@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-import { getDatabase, ref, get, update, onValue} from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+import { getDatabase, ref, get, update} from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCVbhyE93T-JozS8Sc_CTkXDPCd48diJFE",
@@ -14,26 +14,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-// Real-time listener function
-function listenForRealTimeUpdates() {
-    const dataRef = ref(db);
 
-    // Listen for real-time updates on data changes
-    onValue(dataRef, (snapshot) => {
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            document.getElementById("device-data").innerHTML = ""; // Clear existing data display
-            displayData(data); // Display updated data
-        } else {
-            console.log("No data available");
-        }
-    }, (error) => {
-        console.error("Error listening for updates:", error);
-    });
-}
-
-// Call the real-time listener
-listenForRealTimeUpdates();
 
 let mismatchTimeout;
 let mismatchDetected = false;
@@ -170,10 +151,10 @@ async function updateConnectionStatus(device, status) {
 // Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
+    const tolerance = 0.05; // 0.09 amp tolerance
     const expectedCurrent = p1Current + c2Current;
     const difference = Math.abs(p2Current - expectedCurrent);
     const allowableDifference = expectedCurrent * errorMargin;
-    const tolerance = 0.05; // 0.09 amp tolerance
 
     const p2StatusElement = document.getElementById("p2-status");
 
@@ -191,9 +172,16 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
         console.log("LED of C2 set to false for 15 seconds");
 
         setTimeout(async () => {
-            // After 10 seconds, assume C2 current is zero and check again
-            const expectedCurrentWithZeroC2 = p1Current;
-            const differenceWithZeroC2 = Math.abs(p2Current - expectedCurrentWithZeroC2);
+            // Fetch real-time values from the database for P1 and P2 before rechecking
+            const p1Snapshot = await get(ref(db, 'P1'));
+            const p2Snapshot = await get(ref(db, 'P2'));
+            const p1RealTimeCurrent = p1Snapshot.exists() ? p1Snapshot.val().Current : 0;
+            const p2RealTimeCurrent = p2Snapshot.exists() ? p2Snapshot.val().Current : 0;
+
+            // Assume C2 current is 0 for the second comparison (theft detection)
+            const expectedCurrentWithZeroC2 = p1RealTimeCurrent; // Assume C2 is 0
+            const differenceWithZeroC2 = Math.abs(p2RealTimeCurrent - expectedCurrentWithZeroC2);
+
             if (differenceWithZeroC2 > tolerance) {
                 // Theft detected between P1 and P2
                 p2StatusElement.innerHTML = `<span class="not-ok">Theft detected between P1 and P2</span>`;
@@ -218,9 +206,16 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                 await update(c2Ref, { LED: true, Warning: true });
                 console.log("LED of C2 set back to true and Warning set to true");
 
-                // Wait for 1 minute before rechecking
+                // Wait for 1 minute before rechecking with real-time data
                 setTimeout(async () => {
-                    const newDifference = Math.abs(p2Current - expectedCurrent);
+                    const p1Snapshot = await get(ref(db, 'P1'));
+                    const c2Snapshot = await get(ref(db, 'C2'));
+                    const p1RealTimeCurrent = p1Snapshot.exists() ? p1Snapshot.val().Current : 0;
+                    const c2RealTimeCurrent = c2Snapshot.exists() ? c2Snapshot.val().Current : 0;
+
+                    const newExpectedCurrent = p1RealTimeCurrent + c2RealTimeCurrent;
+                    const newDifference = Math.abs(p2RealTimeCurrent - newExpectedCurrent);
+
                     if (newDifference > allowableDifference) {
                         // Still mismatch, mark consumer fault
                         await update(c2Ref, { LED: false });
