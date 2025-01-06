@@ -147,7 +147,7 @@ async function updateConnectionStatus(device, status) {
         console.error("Error updating Connection Status:", error);
     }
 }
-
+//p2,c2,c1
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
     const tolerance = 0.05; // 0.09 amp tolerance
@@ -220,6 +220,32 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                         // Execute the final command to turn off C2 LED
                         await update(c2Ref, { LED: false });
                         console.log("LED of C2 set to false because theft confirmed at consumer side");
+
+                        // Repeat the process after 15 seconds to handle the 15 seconds LED off requirement
+                        setTimeout(async () => {
+                            // Fetch real-time values from the database for P1 and P2 before rechecking again
+                            const p1Snapshot = await get(ref(db, 'P1'));
+                            const p2Snapshot = await get(ref(db, 'P2'));
+                            const p1RealTimeCurrent = p1Snapshot.exists() ? p1Snapshot.val().Current : 0;
+                            const p2RealTimeCurrent = p2Snapshot.exists() ? p2Snapshot.val().Current : 0;
+
+                            // Compare again assuming C2's current is zero (for theft detection)
+                            const expectedCurrentWithZeroC2 = p1RealTimeCurrent; // Assume C2 is 0
+                            const differenceWithZeroC2 = Math.abs(p2RealTimeCurrent - expectedCurrentWithZeroC2);
+
+                            if (differenceWithZeroC2 > tolerance) {
+                                // Theft still detected, continue the cycle
+                                await update(c2Ref, { LED: false });
+                                console.log("LED of C2 set to false for another 15 seconds due to continued theft detection");
+                            } else {
+                                // No theft detected, reset comparison
+                                p2StatusElement.innerHTML = `<span class="ok">Consumer fixed the issue, no theft detected</span>`;
+                                console.log("No theft detected, consumer fixed the issue");
+
+                                // Reset the comparison process by calling the function again
+                                compareP2Current(p2RealTimeCurrent, p1RealTimeCurrent, c2RealTimeCurrent);
+                            }
+                        }, 15000); // Repeat the 15-second check for theft after 15 seconds of LED off
                     } else {
                         // If no theft is found, reset comparison and show success message
                         p2StatusElement.innerHTML = `<span class="ok">Consumer fixed the issue, no theft detected</span>`;
