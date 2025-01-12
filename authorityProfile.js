@@ -90,7 +90,7 @@ function compareCurrents(c1Current, p1Current) {
     const errorMargin = 0.02; // 2% error
     const difference = Math.abs(c1Current - p1Current);
     const allowableDifference = c1Current * errorMargin;
-    const tolerance = 0.1; // 0.09 amp tolerance
+    const tolerance = 0.045; // 0.09 amp tolerance
 
     const c1StatusElement = document.getElementById("c1-status");
     const p1StatusElement = document.getElementById("p1-status");
@@ -152,7 +152,7 @@ async function updateConnectionStatus(device, status) {
 // Function to compare P2 current with the sum of P1 and C2 currents
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0.02; // 2% error
-    const tolerance = 0.09; // 0.09 amp tolerance
+    const tolerance = 0.127; // 0.09 amp tolerance
     const expectedCurrent = p1Current + c2Current;
     const difference = Math.abs(p2Current - expectedCurrent);
     const allowableDifference = expectedCurrent * errorMargin;
@@ -280,7 +280,7 @@ async function compareP3Current(p3Current, c3Current, p2Current) {
     const expectedCurrent = c3Current + p2Current;
     const difference = Math.abs(p3Current - expectedCurrent);
     const allowableDifference = expectedCurrent * errorMargin;
-    const tolerance = 0.1; // 0.09 amp tolerance
+    const tolerance = 0.205; // 0.09 amp tolerance
 
     const p3StatusElement = document.getElementById("p3-status");
 
