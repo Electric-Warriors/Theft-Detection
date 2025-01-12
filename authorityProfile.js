@@ -152,7 +152,7 @@ async function updateConnectionStatus(device, status) {
 // Function to compare P2 current with the sum of P1 and C2 currents
 async function compareP2Current(p2Current, p1Current, c2Current) {
     const errorMargin = 0; // 2% error
-    const tolerance = 0.127; // 0.09 amp tolerance
+    const tolerance = 0.09; // 0.09 amp tolerance
     const expectedCurrent = p1Current + c2Current;
     const difference = Math.abs(p2Current - expectedCurrent);
     const allowableDifference = expectedCurrent * errorMargin;
@@ -255,7 +255,7 @@ async function compareP2Current(p2Current, p1Current, c2Current) {
                 const newExpectedCurrent = p1RealTimeCurrent + c2RealTimeCurrent;
                 const newDifference = Math.abs(p2RealTimeCurrent - newExpectedCurrent);
 
-                if (newDifference > allowableDifference) {
+                if (newDifference > tolerance) {
                     // Still mismatch, confirm theft and disconnect
                     await update(c2Ref, { LED: false });
                     p2StatusElement.innerHTML = `<span class="not-ok">Consumer fault unresolved. Disconnecting...</span>`;
