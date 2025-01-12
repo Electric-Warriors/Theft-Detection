@@ -151,7 +151,7 @@ async function updateConnectionStatus(device, status) {
 // Function to compare P2 current with the sum of P1 and C2 currents with 2% error margin and 0.09 amp tolerance
 // Function to compare P2 current with the sum of P1 and C2 currents
 async function compareP2Current(p2Current, p1Current, c2Current) {
-    const errorMargin = 0.02; // 2% error
+    const errorMargin = 0; // 2% error
     const tolerance = 0.127; // 0.09 amp tolerance
     const expectedCurrent = p1Current + c2Current;
     const difference = Math.abs(p2Current - expectedCurrent);
