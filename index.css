@@ -30,7 +30,7 @@ header .title-3d {
     font-size: 3.5rem;
     transform: rotateX(15deg) rotateY(10deg);
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    animation: titleFloat 3s ease-in-out infinite;
+  
 }
 
 @keyframes titleFloat {
